@@ -9,6 +9,26 @@ MAX_WORKING_DAY=20
 
 totalworkinghour=0
 day=0
+
+function getworkinghour() {
+
+	case $1 in
+
+		$PRESENT)
+			workinghour=$WORKING_HOUR
+		;;
+
+		$PART_TIME)
+			workinghour=$((WORKING_HOUR/2))
+		;;
+
+		*)
+			workinghour=0
+		;;
+	esac
+	echo $workinghour
+}
+
 while [[ $day -lt $MAX_WORKING_DAY && $totalworkinghour -lt $MAX_WORKING_HOUR ]]
 do
 	if [ $totalworkinghour -eq $((MAX_WORKING_HOUR - WORKING_HOUR/2)) ]
@@ -17,21 +37,9 @@ do
 	else
 		present=$((RANDOM%3))
 	fi
-	case $present in
 
-		$PRESENT)
-			emphr=$WORKING_HOUR
-		;;
+	emphr=$(getworkinghour $present)
 
-		$PART_TIME)
-			emphr=$((WORKING_HOUR/2))
-		;;
-
-		*)
-			emphr=0
-		;;
-
-	esac
 	totalworkinghour=$((totalworkinghour + emphr))
 	((day++))
 done
