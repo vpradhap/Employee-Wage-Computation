@@ -39,9 +39,8 @@ do
 	fi
 
 	emphr=$(getworkinghour $present)
-
+	dailywage[((day++))]=$(( emphr * EMP_WAGE_PER_HOUR ))
 	totalworkinghour=$((totalworkinghour + emphr))
-	((day++))
 done
 
 totalsalary=$((totalworkinghour * EMP_WAGE_PER_HOUR))
@@ -49,4 +48,21 @@ totalsalary=$((totalworkinghour * EMP_WAGE_PER_HOUR))
 echo "Employee total workinghour : $totalworkinghour hrs"
 echo "Employee monthly wage : $totalsalary USD"
 echo "Employee total working day : $day"
+
+echo "--------------------------------------------"
+
+for ((i=0;i<${#dailywage[@]};i++))
+do
+	echo "Day$i Earnings :$"${dailywage[i]} "USD"
+done
+
+
+
+
+
+
+
+
+
+
 
