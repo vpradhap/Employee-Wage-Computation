@@ -4,31 +4,41 @@ EMP_WAGE_PER_HOUR=20
 PRESENT=1
 WORKING_HOUR=8
 PART_TIME=2
+MAX_WORKING_HOUR=100
 MAX_WORKING_DAY=20
 
-totalsalary=0
-
-for (( day=0;day<$MAX_WORKING_DAY; day++ ))
+totalworkinghour=0
+day=0
+while [[ $day -lt $MAX_WORKING_DAY && $totalworkinghour -lt $MAX_WORKING_HOUR ]]
 do
-	present=$((RANDOM%3))
-
+	if [ $totalworkinghour -eq $((MAX_WORKING_HOUR - WORKING_HOUR/2)) ]
+	then
+		present=$PART_TIME
+	else
+		present=$((RANDOM%3))
+	fi
 	case $present in
 
 		$PRESENT)
-			dailywage=$((EMP_WAGE_PER_HOUR * WORKING_HOUR))
+			emphr=$WORKING_HOUR
 		;;
 
 		$PART_TIME)
-			dailywage=$((EMP_WAGE_PER_HOUR * WORKING_HOUR/2))
+			emphr=$((WORKING_HOUR/2))
 		;;
 
 		*)
-			dailywage=0
+			emphr=0
 		;;
-	esac
 
-	totalsalary=$((totalsalary + dailywage))
+	esac
+	totalworkinghour=$((totalworkinghour + emphr))
+	((day++))
 done
 
-echo "employee monthly wage : $"$totalsalary "USD"
+totalsalary=$((totalworkinghour * EMP_WAGE_PER_HOUR))
+
+echo "Employee total workinghour : $totalworkinghour hrs"
+echo "Employee monthly wage : $totalsalary USD"
+echo "Employee total working day : $day"
 
